@@ -1,0 +1,20 @@
+#!/bin/bash
+
+
+STATE_OK=0
+STATE_WARNING=1
+STATE_CRITICAL=2
+STATE_UNKNOWN=3
+
+
+PRESENT=$(ls /etc/*/roles | grep -wc cron)
+
+if [ $PRESENT = 1 ];
+        then
+            echo "OK: CRON is enabled | cron_state=1"
+            exit $STATE_OK
+        else
+            echo "CRITICAL: CRON is DISABLED | cron_state=0"
+            exit $STATE_CRITICAL
+        fi
+

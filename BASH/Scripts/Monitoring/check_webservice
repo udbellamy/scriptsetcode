@@ -1,0 +1,33 @@
+#!/bin/bash
+
+STATE_OK=0
+STATE_WARNING=1
+STATE_CRITICAL=2
+STATE_UNKNOWN=3
+
+usage() {
+    cat << EOF
+	TBD
+
+EOF
+}
+
+usage() {
+    cat << EOF
+    check_battery_state : vérifie l'état de la batterie raid
+
+EOF
+}
+
+
+CHECK=$(sudo /home/dalibo_support/opt/MegaRAID/MegaCli/MegaCli64 -AdpBbuCmd -GetBbuStatus -a0 | grep "^Battery State")
+
+if [ $CHECK = "Battery State: Optimal" ];
+        then
+            echo "$CHECK | battery_state=1"
+            exit $STATE_OK
+        else
+            echo "$CHECK | battery_state=0"
+            exit $STATE_CRITICAL
+        fi
+

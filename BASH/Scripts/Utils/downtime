@@ -1,0 +1,10 @@
+#!/bin/bash
+
+echo 'SELECT hosts.name, downtimes.service_id, actual_start_time, actual_end_time, comment_data, services.description FROM downtimes, hosts, services  WHERE downtimes.host_id = hosts.host_id  AND downtimes.service_id = services.service_id AND WEEK(DATE(FROM_UNIXTIME(start_time))-INTERVAL 1 DAY) = WEEK(CURDATE()+INTERVAL 1 DAY)  AND WEEK(DATE(FROM_UNIXTIME(end_time))-INTERVAL 1 DAY) = WEEK(CURDATE()+INTERVAL 1 DAY)  AND YEAR(DATE(FROM_UNIXTIME(start_time))) = YEAR(CURDATE())  AND YEAR(DATE(FROM_UNIXTIME(end_time))) = YEAR(CURDATE()) ;' | mysql -D centreon_storage | grep -Ev 'Downtime cycle' | while read line do
+
+dtstarttime=i$(echo $line | cut -d ";" -f3)
+echo -e $dtstarttime
+done
+
+exit 0
+

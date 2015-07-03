@@ -1,0 +1,12 @@
+/home/dbellamy/Script et Code/tweetswag/main.sh: line 3: ./settings/settings.sh: Aucun fichier ou dossier de ce type
+/home/dbellamy/Script et Code/tweetswag/main.sh: line 4: ./functions.sh: Aucun fichier ou dossier de ce type
+/home/dbellamy/Script et Code/tweetswag/main.sh: line 8: listfollowers: command not found
+Followers Listed
+/home/dbellamy/Script et Code/tweetswag/main.sh: line 10: sortfollowers: command not found
+Followers Sorted
+/home/dbellamy/Script et Code/tweetswag/main.sh: line 12: usercleanup: command not found
+Users Cleaned Up
+/home/dbellamy/Script et Code/tweetswag/main.sh: line 14: autofollow: command not found
+Users Followed
+/home/dbellamy/Script et Code/tweetswag/main.sh: line 16: autounfollow: command not found
+Users Unfollowed or Welcomed

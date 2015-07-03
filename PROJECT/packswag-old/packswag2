@@ -1,0 +1,268 @@
+#!/bin/bash
+
+red='\e[0;31m'
+green='\e[0;32m'
+NC='\e[0m'
+
+# Create files
+
+rm -rf change.temp add.temp remove.temp
+
+        echo -e "\n\033[1mPaquets à modifier\033[0m" >> change.temp 2>&1
+        echo -e "\n\033[1mPaquets à retirer\033[0m" >> remove.temp 2>&1
+        echo -e "\n\033[1mPaquets à ajouter\033[0m" >> add.temp 2>&1
+
+cat sample | grep \+ | while read line
+do
+
+# Set package name
+
+	#nom=$(echo $line | sed -e s/+//g -e 's/[><=]\{1\}=//g' -e s/'[0-9]\..*'//g -e s/\_/\-/g | awk '{print tolower($0)}')
+        nom=$(echo a$line | sed -e s/a+//g -e 's/[><=]\{1\}=//g' -e s/'[0-9]\..*'//g -e s/\_/\-/g | awk '{print tolower($0)}')
+
+# Set number of diff
+
+	ndiff=$(echo $line | grep -oh '[><=].' | wc -l)
+
+# Set diff var
+
+	diff1=$(echo $line | grep -oh -m1 '[><=][><=]' | sed -e s/==/=/g)
+
+	if [[ $ndiff = 2 ]]; then
+		diff2=$(echo $line | grep -oh '[><=].' | tail -1 | sed -e s/'[0-9]//g' | sed -e s/==/=/g)
+	fi
+
+# Set number of ver
+
+	nver=$(echo $line | grep -oh '[0-9\.]*' | wc -l)
+
+# Set version var
+
+	ver1=$(echo $line | sed -e s/'^.*'\=//g -e s/,'.*$'//g)
+
+	if [[ $nver = 2 ]]; then
+		ver2=$(echo $line | grep -oh '[0-9\.]*' | tail -1)
+	fi
+
+# Set if packaging is needed
+
+	pack=$(ssh infr101.auto -n "locate $nom\_$ver1" | grep -v old | grep main | grep -v wheezy | grep -v jessie | wc -l)
+
+# Set category
+
+        nom=$(echo $line | grep \+ | sed -e s/+//g -e 's/[><=]\{1\}=//g' -e s/'[0-9]\..*'//g)
+	cat1=$(grep -i $nom sample | grep -E '[+-]' | wc -l)
+	nom=$(echo $line | sed -e s/+//g -e 's/[><=]\{1\}=//g' -e s/'[0-9]\..*'//g -e s/\_/\-/g | awk '{print tolower($0)}')
+
+############################################################################### MAIN ######################################################################################
+
+	if [[ $nver = 2 ]]; then
+		if [[ $pack -ge 1 ]]; then
+
+			if [[ $nom = "bluetils" ]] || [[ $nom = "bluesys-ws" ]] || [[ $nom = "ansible" ]] || [[ $nom = "autoslave" ]] || [[ $nom = "autoslave-maintenance" ]] || [[ $nom = "bluebus" ]] ||[[ $nom = "bluecases" ]] || [[ $nom = "bluecasesindex" ]] ||[[ $nom = "bluecrash" ]] || [[ $nom = "bluefinance" ]] ||[[ $nom = "bluemers" ]] || [[ $nom = "bluestock" ]] ||[[ $nom = "bluesup" ]] || [[ $nom = "bluesys-tools" ]] ||[[ $nom = "blusers" ]] || [[ $nom = "indigo" ]] || [[ $nom = "subzero" ]]; then
+
+				if [[ $cat1 = 2 ]]; then
+                                        if [[ $ver = 0 ]]; then
+                                        echo " $nom," | awk '{print tolower($0)}' >> change.temp
+				else
+					echo " $nom ($diff1 $ver1), $nom ($diff2 $ver2)," | awk '{print tolower($0)}' >> change.temp
+					fi
+				fi
+				
+				if [[ $cat1 = 1 ]]; then
+                                	if [[ $ver = 0 ]]; then
+                                        echo " $nom," | awk '{print tolower($0)}' >> add.temp
+                                else
+					echo " $nom ($diff1 $ver1), $nom ($diff2 $ver2)," | awk '{print tolower($0)}' >> add.temp
+					fi
+				fi
+			else
+				if [[ $cat1 = 2 ]]; then
+                                        if [[ $ver = 0 ]]; then
+                                        echo " $nom," | awk '{print tolower($0)}' >> change.temp
+					else
+					echo " python-$nom ($diff1 $ver1), python-$nom ($diff2 $ver2)," | awk '{print tolower($0)}' >> change.temp
+					fi
+				fi
+
+				if [[ $cat1 = 1 ]]; then
+                                        if [[ $ver = 0 ]]; then
+                                        echo " $nom," | awk '{print tolower($0)}' >> add.temp
+					else
+					echo " python-$nom ($diff1 $ver1), python-$nom ($diff2 $ver2)," | awk '{print tolower($0)}' >> add.temp
+					fi
+				fi
+			fi
+		else
+			
+			if [[ $nom = "bluetils" ]] || [[ $nom = "bluesys-ws" ]] || [[ $nom = "ansible" ]] || [[ $nom = "autoslave" ]] || [[ $nom = "autoslave-maintenance" ]] || [[ $nom = "bluebus" ]] ||[[ $nom = "bluecases" ]] || [[ $nom = "bluecasesindex" ]] ||[[ $nom = "bluecrash" ]] || [[ $nom = "bluefinance" ]] ||[[ $nom = "bluemers" ]] || [[ $nom = "bluestock" ]] ||[[ $nom = "bluesup" ]] || [[ $nom = "bluesys-tools" ]] ||[[ $nom = "blusers" ]] || [[ $nom = "indigo" ]] || [[ $nom = "subzero" ]]; then
+
+				if [[ $cat1 = 2 ]]; then
+					echo -e " $nom ($diff1 $ver1), $nom ($diff2 $ver2),${red}\033[1m A PACKAGER${NC}" >> change.temp
+					echo -e "${red}\033[1m---------->${NC} 	python packaging.py $nom $ver1 'New Release'" >> change.temp
+				fi
+				
+				if [[ $cat1 = 1 ]]; then
+					echo -e " $nom ($diff1 $ver1), $nom ($diff2 $ver2),${red}\033[1m A PACKAGER${NC}" >> add.temp
+					echo -e "${red}\033[1m---------->${NC} 	python packaging.py $nom $ver1 'New Release'" >> add.temp
+				fi
+			else
+				if [[ $cat1 = 2 ]]; then
+					echo -e " python-$nom ($diff1 $ver1), python-$nom ($diff2 $ver2),${red}\033[1m A PACKAGER${NC}" >> change.temp
+                	                echo -e "${red}\033[1m---------->${NC}       python packaging.py python-$nom $ver1 'New Release'" >> change.temp
+				fi
+				
+				if [[ $cat1 = 1 ]]; then
+					echo -e " python-$nom ($diff1 $ver1), python-$nom ($diff2 $ver2),${red}\033[1m A PACKAGER${NC}" >> add.temp
+	                                echo -e "${red}\033[1m---------->${NC}       python packaging.py python-$nom $ver1 'New Release'" >> add.temp
+				fi
+			fi
+		fi
+
+####################################################################################
+
+	else
+
+	if [[ $pack -ge 1 ]]; then
+		
+			if [[ $nom = "bluetils" ]] || [[ $nom = "bluesys-ws" ]] || [[ $nom = "ansible" ]] || [[ $nom = "autoslave" ]] || [[ $nom = "autoslave-maintenance" ]] || [[ $nom = "bluebus" ]] ||[[ $nom = "bluecases" ]] || [[ $nom = "bluecasesindex" ]] ||[[ $nom = "bluecrash" ]] || [[ $nom = "bluefinance" ]] ||[[ $nom = "bluemers" ]] || [[ $nom = "bluestock" ]] ||[[ $nom = "bluesup" ]] || [[ $nom = "bluesys-tools" ]] ||[[ $nom = "blusers" ]] || [[ $nom = "indigo" ]] || [[ $nom = "subzero" ]]; then
+	
+				if [[ $cat1 = 2 ]]; then
+					echo " $nom ($diff1 $ver1)," | awk '{print tolower($0)}' >> change.temp
+				fi
+
+				if [[ $cat1 = 1 ]]; then
+					echo " $nom ($diff1 $ver1)," | awk '{print tolower($0)}' >> add.temp
+				fi
+			else
+				if [[ $cat1 = 2 ]]; then
+					echo " python-$nom ($diff1 $ver1)," | awk '{print tolower($0)}' >> change.temp
+				fi
+
+				if [[ $cat1 = 1 ]]; then
+					echo " python-$nom ($diff1 $ver1)," | awk '{print tolower($0)}' >> add.temp
+				fi
+			fi
+	else
+
+			if [[ $nom = "bluetils" ]] || [[ $nom = "bluesys-ws" ]] || [[ $nom = "ansible" ]] || [[ $nom = "autoslave" ]] || [[ $nom = "autoslave-maintenance" ]] || [[ $nom = "bluebus" ]] ||[[ $nom = "bluecases" ]] || [[ $nom = "bluecasesindex" ]] ||[[ $nom = "bluecrash" ]] || [[ $nom = "bluefinance" ]] ||[[ $nom = "bluemers" ]] || [[ $nom = "bluestock" ]] ||[[ $nom = "bluesup" ]] || [[ $nom = "bluesys-tools" ]] ||[[ $nom = "blusers" ]] || [[ $nom = "indigo" ]] || [[ $nom = "subzero" ]]; then
+
+				if [[ $cat1 = 2 ]]; then
+					echo -e " $nom ($diff1 $ver1),${red}\033[1m A PACKAGER${NC}" >> change.temp
+                                	echo -e "${red}\033[1m---------->${NC}       python packaging.py $nom $ver1 'New Release'" >> change.temp
+				fi
+
+				if [[ $cat1 = 1 ]]; then
+					echo -e " $nom ($diff1 $ver1),${red}\033[1m A PACKAGER${NC}" >> add.temp
+	                               	echo -e "${red}\033[1m---------->${NC}       python packaging.py $nom $ver1 'New Release'" >> add.temp
+				fi
+			else
+				if [[ $cat1 = 2 ]]; then
+					echo -e " python-$nom ($diff1 $ver1),${red}\033[1m A PACKAGER${NC}" >> change.temp
+                                	echo -e "${red}\033[1m---------->${NC}       python packaging.py python-$nom $ver1 'New Release'" >> change.temp
+				fi
+
+				if [[ $cat1 = 1 ]]; then
+					echo -e " python-$nom ($diff1 $ver1),${red}\033[1m A PACKAGER${NC}" >> add.temp
+	                               	echo -e "${red}\033[1m---------->${NC}       python packaging.py python-$nom $ver1 'New Release'" >> add.temp
+				fi
+			fi
+	fi
+fi
+
+############################################################################################################################################################################
+
+done
+
+cat change.temp
+cat add.temp
+
+rm -f change.temp
+rm -f add.temp
+
+cat sample | grep \- | grep -v \+ | while read line
+do
+
+# Set package name
+
+        nom2=$(echo a$line | sed -e s/a-//g -e 's/[><=]\{1\}=//g' -e s/'[0-9]\..*'//g -e s/\_/\-/g | awk '{print tolower($0)}')
+
+# Set number of diff
+
+        ndiff=$(echo $line | grep -oh '[><=].' | wc -l)
+
+# Set diff var
+
+        diff1=$(echo $line | grep -oh -m1 '[><=][><=]')
+        if [[ $ndiff = 2 ]]; then
+                diff2=$(echo $line | grep -oh '[><=].' | tail -1 | sed -e s/'[0-9]//g')
+        fi
+
+# Set number of ver
+
+        nver=$(echo $line | grep -oh '[0-9\.]*' | wc -l)
+
+# Set version var
+	
+	if [[ $nver = 0 ]]; then
+		ver1=""
+	fi
+
+	if [[ $nver = 1 ]]; then
+        	ver1=$(echo $line | sed -e s/'^.*'\=//g -e s/,'.*$'//g)
+	fi
+
+	if [[ $nver = 2 ]]; then
+                ver2=$(echo $line | grep -oh '[0-9\.]*' | tail -1)
+        fi
+
+# Set category
+	
+	nom=$(echo a$line | sed -e s/a-//g -e 's/[><=]\{1\}=//g' -e s/'[0-9]\..*'//g)
+        cat2=$(grep -i $nom sample | grep '[+-]' | wc -l)
+        nom=$(echo a$line | sed -e s/a-//g -e 's/[><=]\{1\}=//g' -e s/'[0-9]\..*'//g -e s/\_/\-/g | awk '{print tolower($0)}')
+
+############################################################################### MAIN ######################################################################################
+
+        if [[ $nver = 2 ]]; then
+                        if [[ $nom = "bluetils" ]] || [[ $nom = "bluesys-ws" ]] || [[ $nom = "ansible" ]] || [[ $nom = "autoslave" ]] || [[ $nom = "autoslave-maintenance" ]] || [[ $nom = "bluebus" ]] ||[[ $nom = "bluecases" ]] || [[ $nom = "bluecasesindex" ]] ||[[ $nom = "bluecrash" ]] || [[ $nom = "bluefinance" ]] ||[[ $nom = "bluemers" ]] || [[ $nom = "bluestock" ]] ||[[ $nom = "bluesup" ]] || [[ $nom = "bluesys-tools" ]] ||[[ $nom = "blusers" ]] || [[ $nom = "indigo" ]] || [[ $nom = "subzero" ]]; then
+
+                                if [[ $cat2 = 1 ]]; then
+                                        echo " $nom ($diff1 $ver1), $nom ($diff2 $ver2)," | awk '{print tolower($0)}' >> remove.temp
+                                fi
+                        else
+                                if [[ $cat2 = 1 ]]; then
+                                        echo " python-$nom ($diff1 $ver1), python-$nom ($diff2 $ver2)," | awk '{print tolower($0)}' >> remove.temp
+                                fi
+                        fi
+
+####################################################################################
+
+        else
+
+                        if [[ $nom = "bluetils" ]] || [[ $nom = "bluesys-ws" ]] || [[ $nom = "ansible" ]] || [[ $nom = "autoslave" ]] || [[ $nom = "autoslave-maintenance" ]] || [[ $nom = "bluebus" ]] ||[[ $nom = "bluecases" ]] || [[ $nom = "bluecasesindex" ]] ||[[ $nom = "bluecrash" ]] || [[ $nom = "bluefinance" ]] ||[[ $nom = "bluemers" ]] || [[ $nom = "bluestock" ]] ||[[ $nom = "bluesup" ]] || [[ $nom = "bluesys-tools" ]] ||[[ $nom = "blusers" ]] || [[ $nom = "indigo" ]] || [[ $nom = "subzero" ]]; then
+
+                                if [[ $cat2 = 1 ]] && [[ $ver > 0 ]]; then
+                                        echo " $nom ($diff1 $ver1)," | awk '{print tolower($0)}' >> remove.temp
+                                elif [[ $cat2 = 1 ]]; then
+                                        echo " $nom," | awk '{print tolower($0)}' >> remove.temp
+                                fi
+                        else
+
+                                if [[ $cat2 = 1 ]] && [[ $nver > 0 ]]; then
+                                        echo " python-$nom ($diff1 $ver1)," | awk '{print tolower($0)}' >> remove.temp
+				elif [[ $cat2 = 1 ]]; then
+                                      	echo " $nom," | awk '{print tolower($0)}' >> remove.temp
+				fi
+        fi
+fi
+
+############################################################################################################################################################################
+
+done
+
+cat remove.temp
+
+rm -rf remove.temp
+
+exit 0
