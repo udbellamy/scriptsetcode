@@ -20,12 +20,14 @@ get-vc "IP" or "localhost"
 
 'From Template :
 
-("CRON01","MAJ01","WRK01","WRK02","WS01","WS02","WS04","WS05","WS07","WS08","OPS01","OPS02","WWW01","WWW02","API01","API02","RDS01","RDS02","RAB01","RAB02","PSQL01","PSQL02","PSQL03","NFS01","NFS02","CYC01") | Foreach {
+("CRON01","MAJ01","WRK01","WRK02","WS01","WS02","WS04","WS05","WS07","WS08","OPS01","OPS02","WWW01","WWW02","API01","API02") | Foreach {
 New-VM `
--Name "NAMPRDIND$_" `
--Datastore "CH3-SAS-ESX-PROD-LIN01" `
--Template "TPL_Debian_8.0.0_Secure_64bits_v0.4_US" `
--Vmhost "172.30.106.80" `
+-Name "ALLEH1LND$_" `
+-Datastore "SAN20-SAS-ESX-EHP-LIN01" `
+-Template "TPL_Debian_8.0.0_Secure_64bits_v0.4" `
+-Vmhost "ildprdesx21.production.autolib.eu" `
+-RunAsync `
+-Whatif `
 }
 
 'From VM :
