@@ -1,11 +1,11 @@
-'# Start configuration
+# Start configuration
 
-'# vCenter details
+# vCenter details
 	$vcenter = "172.16.98.20"
  
 
 
-'# Config VM peripherals
+# Config VM peripherals
 	$vmname = "ALLPRDPARWWW01"
 	$ip = "172.16.138.179"
 	$netmask = "255.255.255.0"
@@ -13,28 +13,28 @@
  
 
 
-'# VM user - must be root user
+# VM user - must be root user
 	$GuestCred = "root"
 	$GuestPass = "*a renseigner*"
  
 
 
-'# VM Deployment Details
+# VM Deployment Details
 	$destination_pool = "EQX-CONSO"
 	$template_name = "TPL_Debian_8.0.0_Secure_64bits_v0.4"
 	$datastore_name = "SAN11-SAS-ESX-PROD-LIN02"
 
 
 
-'# Server configuration
-	'# System
+# Server configuration
+	# System
 		$vcpu = 2 
 		$memMB = 2048 
 		$Disk1GB = 30
 		$Disk2GB = 20  # 0 = no 2nd/3rd disk
 		$Disk3GB = 0    # 0 = no 2nd/3rd disk
 	
-	'# Network
+	# Network
 		$portgrouptmp = "ILD-SUPERVISION-VL212"
 		$portgroup1 = "ALL-EHP-MGMT_LONDRES-VL473"
 		$portgroup2 = "ALL-EHP-LND-523"
