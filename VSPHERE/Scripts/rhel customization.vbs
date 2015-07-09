@@ -6,16 +6,16 @@
 
 
 # Config VM peripherals
-	$vmname = "ALLPRDPARWWW01"
-	$ip = "172.16.138.179"
-	$netmask = "255.255.255.0"
-	$gateway = "172.16.138.1"
+	$vmname = "DBTEST01"
+	$ip = "test1"
+	$netmask = "test2"
+	$gateway = "test3"
  
 
 
 # VM user - must be root user
 	$GuestCred = "root"
-	$GuestPass = "*a renseigner*"
+	$GuestPass = "password"
  
 
 
@@ -111,7 +111,7 @@ Set-VMGuestNetworkInterface -VMGuestNetworkInterface $interface -GuestUser $Gues
 	
 
 # DEBIAN Specific Interface Infos
-	$command = "/root/customization.sh $vmname $ip $netmask $gateway"
+	$command = "/root/init_mgmt.py $ip $netmask $gateway"
 	Invoke-VMScript -VM $vmname -ScriptText $command -GuestUser $GuestCred -GuestPassword $GuestPass -ScriptType Bash
  
 
