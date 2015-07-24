@@ -20,7 +20,7 @@ get-vc "IP" or "localhost"
 
 'From Template :
 
-("CRON01","MAJ01","WRK01","WRK02","WS01","WS02","WS04","WS05","WS07","WS08","OPS01","OPS02","WWW01","WWW02","API01","API02") | Foreach {
+("WSRT02","SAS01","SIN01","CYC01","POL01","WS02","WS04","WS05","WS07","WS08","OPS01","OPS02","WWW01","WWW02","API01","API02") | Foreach {
 New-VM `
 -Name "ALLEH1LND$_" `
 -Datastore "SAN20-SAS-ESX-EHP-LIN01" `
@@ -32,13 +32,13 @@ New-VM `
 
 'From VM :
 
-("CRON01","MAJ01","WRK01","WRK02","WS01","WS02","WS04","WS05","WS07","WS08","OPS01","OPS02","WWW01","WWW02","API02","RDS01","RDS02","RAB01","RAB02","PSQL01","PSQL02","PSQL03","NFS01","NFS02","CYC01") | Foreach {
+("WSRT02","SAS01","SIN01","CYC01") | Foreach {
 New-VM `
--Name "NAMPRDIND$_" `
--Datastore "CH3-SAS-ESX-PROD-LIN01" `
--VM "NAMPRDINDAPI01" `
--Vmhost "172.30.106.80" `
--Location "Linux" `
+-Name "OVHPRDPOP$_" `
+-Datastore "pcc-001961" `
+-VM "OVHPRDPOPWSRT01" `
+-Vmhost "172.16.72.51" `
+-Location "POP_PROD" `
 -RunAsync `
 }
 
