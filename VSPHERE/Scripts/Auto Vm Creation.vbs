@@ -32,14 +32,40 @@ New-VM `
 
 'From VM :
 
-("WSRT02","SAS01","SIN01","CYC01") | Foreach {
+("PSQL01","MES01","MES02","MES03") | Foreach {
 New-VM `
--Name "OVHPRDPOP$_" `
--Datastore "pcc-001961" `
--VM "OVHPRDPOPWSRT01" `
--Vmhost "172.16.72.51" `
--Location "POP_PROD" `
+-Name "EQXPRDTLM$_" `
+-Datastore "SAN11-SAS-ESX-PROD-LIN02" `
+-VM "EQXPRDTLMRDS01" `
+-Vmhost "eqxprdesx12.production.autolib.eu" `
+-Location "BlueTelemetry" `
 -RunAsync `
+}
+
+("RDS01","PSQL01","MES01","MES02","MES03") | Foreach {
+Start-VM `
+-VM "EQXPRDTLM$_" `
+-RunAsync `
+}
+
+$bluedvPortGroup = Get-VDPortgroup -name EQX-BACK_INT-VL111
+("RDS01","PSQL01","MES01","MES02","MES03") | Foreach {
+New-NetworkAdapter `
+-VM "EQXPRDTLM$_" `
+-StartConnected `
+-Type Vmxnet3 `
+-PortGroup $bluedvPortGroup `
+}
+
+
+$bluedvPortGroup = Get-VDPortgroup -name EQX-FRONT_INT-VL221
+("RDS01","PSQL01","MES01","MES02","MES03") | Foreach {
+New-NetworkAdapter `
+-VM "EQXPRDTLM$_" `
+-StartConnected `
+-Type Vmxnet3 `
+-PortGroup $bluedvPortGroup `
+-Whatif `
 }
 
 'From Temmplate :
