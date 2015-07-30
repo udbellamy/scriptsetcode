@@ -6,6 +6,7 @@
 + ### j.hk c.hp ~1 lk.legs c.lp ~ lk.sbk  
 ![j]![dot]![hk]![to]![cr]![dot]![mp]![x1]![qcf]![plus]![lk]![to]![cr]![dot]![lp]![x]![cdu]![plus]![lk]  
 
+
 ## 1 barre
 + ### c.lp s.mp c.mk ex.legs  
 ![cr]![dot]![lp]![to]![mp]![to]![cr]![dot]![mk]![to]![qcf]![plus]![exk]  
