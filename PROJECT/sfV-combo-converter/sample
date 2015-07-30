@@ -1,1 +1,16 @@
-j.hk c.hp ~ lk.legs c.lp ~ lk.sbk
+c.lp s.mp c.mk hk.legs
+j.hp c.hp ~1 lk.legs c.lp ~ lk.sbk
+j.hk c.hp ~1 lk.legs c.lp ~ lk.sbk
+
+c.lp s.mp c.mk ex.legs
+j.hp c.hp ~1 lk.legs c.lp ~ ex.legs
+j.hk c.hp ~1 lk.legs c.lp ~ ex.legs
+
+f.hk s.mp c.mk ~ ex.legs
+f.hk s.mp c.hp ~6 ex.legs
+df.mk s.mp ~ ex.legs
+
+j.hp c.hp ~1 VT s.mp c.hp ~6 ex.legs
+j.hk c.hp ~1 VT s.mp c.hp ~6 ex.legs
+j.hp c.hp ~1 VT s.mp c.mk ~ ex.legs
+j.hk c.hp ~1 VT s.mp c.mk ~ ex.legs
