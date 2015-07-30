@@ -1,18 +1,35 @@
+## 0 barre
++ ### c.lp s.mp c.mk hk.legs  
 ![cr]![dot]![lp]![to]![mp]![to]![cr]![dot]![mk]![to]![qcf]![plus]![hk]  
++ ### j.hp c.hp ~1 lk.legs c.lp ~ lk.sbk  
 ![j]![dot]![mp]![to]![cr]![dot]![mp]![x1]![qcf]![plus]![lk]![to]![cr]![dot]![lp]![x]![cdu]![plus]![lk]  
-![j]![dot]![hk]![to]![cr]![dot]![mp]![x1]![qcf]![plus]![lk]![to]![cr]![dot]![lp]![x]![cdu]![plus]![lk]    
++ ### j.hk c.hp ~1 lk.legs c.lp ~ lk.sbk  
+![j]![dot]![hk]![to]![cr]![dot]![mp]![x1]![qcf]![plus]![lk]![to]![cr]![dot]![lp]![x]![cdu]![plus]![lk]  
 
+## 1 barre
++ ### c.lp s.mp c.mk ex.legs  
 ![cr]![dot]![lp]![to]![mp]![to]![cr]![dot]![mk]![to]![qcf]![plus]![exk]  
++ ### j.hp c.hp ~1 lk.legs c.lp ~ ex.legs  
 ![j]![dot]![mp]![to]![cr]![dot]![mp]![x1]![qcf]![plus]![lk]![to]![cr]![dot]![lp]![x]![qcf]![plus]![exk]  
++ ### j.hk c.hp ~1 lk.legs c.lp ~ ex.legs  
 ![j]![dot]![hk]![to]![cr]![dot]![mp]![x1]![qcf]![plus]![lk]![to]![cr]![dot]![lp]![x]![qcf]![plus]![exk]  
-  
+
+## 1 barre VTrigger Actif
++ ### f.hk s.mp c.mk ~ ex.legs
 ![f]![dot]![hk]![to]![mp]![to]![cr]![dot]![mk]![x]![qcf]![plus]![exk]
++ ### f.hk s.mp c.hp ~6 ex.legs
 ![f]![dot]![hk]![to]![mp]![to]![cr]![dot]![mp]![x6]![qcf]![plus]![exk]
++ ### df.mk s.mp ~ ex.legs
 ![df]![dot]![mk]![to]![mp]![x]![qcf]![plus]![exk]
-  
+
+## 1 barre VTrigger mid combo
++ ### j.hp c.hp ~1 VT s.mp c.hp ~6 ex.legs
 ![j]![dot]![mp]![to]![cr]![dot]![mp]![x1]![vt] ![to]![mp]![to]![cr]![dot]![mp]![x6]![qcf]![plus]![exk]
++ ### j.hk c.hp ~1 VT s.mp c.hp ~6 ex.legs
 ![j]![dot]![hk]![to]![cr]![dot]![mp]![x1]![vt] ![to]![mp]![to]![cr]![dot]![mp]![x6]![qcf]![plus]![exk]
++ ### j.hp c.hp ~1 VT s.mp c.mk ~ ex.legs
 ![j]![dot]![mp]![to]![cr]![dot]![mp]![x1]![vt] ![to]![mp]![to]![cr]![dot]![mk]![x]![qcf]![plus]![exk]
++ ### j.hk c.hp ~1 VT s.mp c.mk ~ ex.legs
 ![j]![dot]![hk]![to]![cr]![dot]![mp]![x1]![vt] ![to]![mp]![to]![cr]![dot]![mk]![x]![qcf]![plus]![exk]
 
 [ap]: ./SFIcons/any_punch.png
