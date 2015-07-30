@@ -37,13 +37,13 @@
 [lp]: ./SFIcons/light_punch.png
 [mp]: ./SFIcons/medium_punch.png
 [hp]: ./SFIcons/heavy_punch.png
-[exp]: ./SFIcons/ex_punch.png
+[exp]: ./SFIcons/exp.png
 
 [ak]: ./SFIcons/any_kick.png
 [lk]: ./SFIcons/light_kick.png
 [mk]: ./SFIcons/medium_kick.png
 [hk]: ./SFIcons/heavy_kick.png
-[exk]: ./SFIcons/ex_kick.png
+[exk]: ./SFIcons/exk.png
 
 [cr]: ./SFIcons/motion_crouch.png
 [j]: ./SFIcons/motion_jump.png
@@ -63,5 +63,5 @@
 [x4]: ./SFIcons/cancel4.png
 [x5]: ./SFIcons/cancel5.png
 [x6]: ./SFIcons/cancel6.png
-[vt]: ./SFIcons/vtrigger.png
-[vs]: ./SFIcons/vskill.png
+[vt]: ./SFIcons/vt.png
+[vs]: ./SFIcons/vs.png
