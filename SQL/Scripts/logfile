@@ -1,0 +1,19 @@
+#!/bin/bash
+
+buffer="/tmp/alertlogsbuffer"
+
+rm $buffer
+
+week=$(date +%V)
+file="/tmp/alertlogs/alertlogs-S$week.csv"
+day=$(date +"%d/%m/%y")
+
+#echo -e "$week \n" >> $file
+
+echo 'SELECT host_name,service_id,output,count(*),service_description FROM logs WHERE 'msg_type' IN (0,1) AND 'type' = 1 AND DATE(FROM_UNIXTIME(ctime)) >= CURDATE() AND DATE(FROM_UNIXTIME(ctime)) < CURDATE() + INTERVAL 1 DAY GROUP BY host_name,service_description,type;' | mysql -D centreon_storage | grep -Ev 'UNKNOWN|OK|\-loc|\-abo|_Module_' >> $buffer
+
+sed -i 's/\t/;/g;s|^|'$day';|g' $buffer
+cat $buffer | tail -n +2 >> $file
+
+exit 0
+

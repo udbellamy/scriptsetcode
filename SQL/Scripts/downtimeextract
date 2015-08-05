@@ -1,0 +1,39 @@
+#!/bin/bash
+
+echo -e "Bonjour,\n"
+echo -e "Voici les downtime mis en place cette semaine :\n"
+
+echo 'Hostname		Service		Début			Fin			Commentaire				Description'
+
+echo 'SELECT hosts.name, downtimes.service_id, actual_start_time, end_time, comment_data, services.description FROM downtimes, hosts, services  WHERE downtimes.host_id = hosts.host_id  AND downtimes.service_id = services.service_id AND WEEK(DATE(FROM_UNIXTIME(start_time))-INTERVAL 1 DAY) = WEEK(CURDATE()+INTERVAL 1 DAY)  AND WEEK(DATE(FROM_UNIXTIME(end_time))-INTERVAL 1 DAY) = WEEK(CURDATE()+INTERVAL 1 DAY)  AND YEAR(DATE(FROM_UNIXTIME(start_time))) = YEAR(CURDATE())  AND YEAR(DATE(FROM_UNIXTIME(end_time))) = YEAR(CURDATE()) ;' | mysql -D centreon_storage | sed -e "s/\	/;/g" | grep -Ev 'Downtime cycle' | tail -n +2 | while read line
+do
+
+dtstarttime=\"$(date -d @$(echo $line | cut -d ";" -f3 | grep -v "start") +"%d-%m-%Y %T")\"
+dtendtime=\"$(date -d @$(echo $line | cut -d ";" -f4 | grep -v "start") +"%d-%m-%Y %T")\"
+
+line=$(echo $line | awk -F\; '{$3='"$dtstarttime"';$4='"$dtendtime"';}1' OFS=\;)
+
+echo $line | awk -F\; '{print $1"		"$2"		"$3"	"$4"	"$5"			"$6}' OFS=,
+
+done
+
+echo -e "\nVoici les downtime qui se termineront la semaine prochaine :\n"
+
+echo 'Hostname		Service		Début			Fin			Commentaire				Description'
+
+echo 'SELECT hosts.name, downtimes.service_id, actual_start_time, end_time, comment_data, services.description FROM downtimes, hosts, services WHERE downtimes.host_id = hosts.host_id AND downtimes.service_id = services.service_id AND WEEK(DATE(FROM_UNIXTIME(end_time))-INTERVAL 1 DAY) = WEEK(CURDATE()+INTERVAL 8 DAY) ;' | mysql -D centreon_storage | sed -e "s/\	/;/g" | grep -Ev 'Downtime cycle' | tail -n +2 | while read line
+do
+
+dtstarttime=\"$(date -d @$(echo $line | cut -d ";" -f3 | grep -v "start") +"%d-%m-%Y %T")\"
+dtendtime=\"$(date -d @$(echo $line | cut -d ";" -f4 | grep -v "start") +"%d-%m-%Y %T")\"
+
+line=$(echo $line | awk -F\; '{$3='"$dtstarttime"';$4='"$dtendtime"';}1' OFS=\;)
+
+echo $line | awk -F\; '{print $1"		"$2"		"$3"	"$4"	"$5"		"$6}' OFS=,
+
+done
+
+echo -e "\nCordialement,\n"
+echo "Autobot"
+
+exit 0
