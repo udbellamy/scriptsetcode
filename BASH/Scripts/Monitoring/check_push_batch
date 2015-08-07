@@ -1,0 +1,19 @@
+#!/bin/bash
+
+STATE_OK=0
+STATE_WARNING=1
+STATE_CRITICAL=2
+STATE_UNKNOWN=3
+
+NB=$(cat /var/log/bluesys/autolib/info-$(date +%F).log | grep "Received a batch of " | cut -d " " -f 14 | tail -1)
+TiME=$(cat /var/log/bluesys/autolib/info-$(date +%F).log | grep "Received a batch of "|cut -d " " -f 4 | tail -1)
+ACTIVE=$(cat /var/log/bluesys/autolib/info-$(date +%F).log | grep "Received a batch of "| grep " $(date +%H:%M)" | wc -l)
+
+if [ $ACTIVE = 0 ]; then
+    NB=0
+    TIME=$(date +%H:%M:%S)
+fi
+
+echo -E "$TIME - Nombre de messages par batch : $NB | number_of_messages=$NB"
+
+exit 0
