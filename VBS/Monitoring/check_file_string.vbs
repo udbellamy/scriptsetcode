@@ -2,17 +2,27 @@ Option Explicit
 
  '*************Configuration**************
  'Define the location of the text/log file
- Const sFileName = "TaskLog.txt"
+
+dim dtMonth, dtDate, sFileName
+
+dtMonth = Right(String(2, "0") & Month(date), 2)
+dtDate = DatePart("yyyy", Now) & dtMonth & DatePart("d", Now - 1)
+
+ sFileName = "C:\ProgramData\QlikTech\DistributionService\1\Log\" & dtDate & "\234500 - Prod_Extraction_Extraction.qvw\TaskLog.txt"
  Const sStringToFind = "The Source Document was NOT reloaded successfully"
- Const sPathToFile = "C:\Documents and Settings\All Users\Application Data\QlikTech\DistributionService\1\Log\20150710\010000 - Prod_Applications_Autres_CRF_CRF.qvw\"
+ Const sPathToFile = ""
  '***********End Configuration'***********
 
  '''''Declare Variables
  'Used in the script
- Dim nCount, sMsg, nResult, strLine
+ Dim nCount, sMsg, nResult, strLine, exitState
  'Objects
- Dim oReadFile
+ Dim oReadFile, oFSO
 
+'Variable de retour d'etat vers NAGIOS
+const intOK = 0
+const intWarning = 1 
+const intCritical = 2
 
  'Create Objects
  Set oFSO = CreateObject("Scripting.FileSystemObject")
@@ -30,13 +40,17 @@ Option Explicit
  If InStr(strLine, sStringToFind) Then
  nCount = nCount + 1
  End If
-
+ Loop
  'Set the results
 
+ 
+
  If nCount = 0 Then
-Wscript.echo "Pas Caca"
+Wscript.echo "OK: The Source Document was reloaded successfully"
+	exitState = intOK
  Else
-Wscript.echo "Caca"
+Wscript.echo "CRITICAL: The Source Document was NOT reloaded successfully"
+	exitState = intCRITICAL
  End If
 
  'Close text file and remove network drive
