@@ -12,6 +12,11 @@ New-NetworkAdapter -vm $vmname -StartConnected -Type Vmxnet3 -PortGroup $bluedvP
 Get-Vm -name $vmname | Get-NetworkAdapter | foreach { if( $_.NetworkName -like $portgrouptmp) { Set-NetworkAdapter $_ -PortGroup $bluedvPortGroup1 -Confirm:$false }}
 	}
 
+function DisconnectNetAdapter {
+Get-Vm -name $vmname | Get-NetworkAdapter | foreach { if( $_.Connected -like $true) { Set-NetworkAdapter $_ -Connected:$false -Confirm:$false }}
+    }
+DisconnectNetAdapter
+
 $vmname = "ALLEH1LNDAPI01"
 UpdateVMNetwork
 $vmname = "ALLEH1LNDAPI02"
