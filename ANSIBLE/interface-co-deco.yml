@@ -1,0 +1,6 @@
+---
+- name: Interface Connect / disconnect
+  hosts: all
+  gather_facts: no
+  roles:
+    - interface-co-deco
