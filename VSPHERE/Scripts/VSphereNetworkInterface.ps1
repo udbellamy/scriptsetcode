@@ -13,8 +13,9 @@ Get-Vm -name $vmname | Get-NetworkAdapter | foreach { if( $_.NetworkName -like $
 	}
 
 function DisconnectNetAdapter {
-Get-Vm -name $vmname | Get-NetworkAdapter | foreach { if( $_.Connected -like $true) { Set-NetworkAdapter $_ -Connected:$false -Confirm:$false }}
+Get-Vm -name $vmname | Get-NetworkAdapter | foreach { Set-NetworkAdapter $_ -Connected:$false -StartConnected:$false -Confirm:$false }
     }
+
 DisconnectNetAdapter
 
 $vmname = "ALLEH1LNDAPI01"
