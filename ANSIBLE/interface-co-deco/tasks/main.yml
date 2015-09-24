@@ -1,0 +1,29 @@
+---
+
+# Tower survey has to define which vcenter to use
+- name: set facts DC and Vcenter for ILD 
+  set_fact:
+    vcenter_hostname: ildsupvce01.production.autolib.eu
+  when: vcenter == "ILD"
+
+# Tower survey has to define which vcenter to use
+- name: set facts DC and Vcenter for EQX
+  set_fact:
+    vcenter_hostname: eqxsupvce01.production.autolib.eu
+  when: vcenter == "EQX"
+
+- name: Include plain vars
+  include_vars: 'vm-plain.yml'
+
+- name: Include secret vars
+  include_vars: 'vm-secret.yml'
+
+- name: Disconnect Interfaces
+  delegate_to: '#definethis#'
+  raw: 'D:/ScriptAnsibleDisconnect.ps1 {{ vcenter_hostname }} {{ inventory_hostname_short }} {{ vsphere_guest.user }} {{ secret.vsphere_guest.password }}'
+  when: connected == "Deconnecter"
+
+- name: Connect Interfaces
+  delegate_to: '#definethis#'
+  raw: 'D:/ScriptAnsibleConnect.ps1 {{ vcenter_hostname }} {{ inventory_hostname_short }} {{ vsphere_guest.user }} {{ secret.vsphere_guest.password }}'
+  when: connected == "Connecter"
