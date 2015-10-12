@@ -1,0 +1,54 @@
+bluely_ehp:
+    dns:
+        server: 172.18.52.64
+        zone: mgt.production.autoehp.eu
+    old_machines:
+        - hostname: allehplyoapp01
+            src_mgt: 172.18.208.128
+            src_svc: 172.18.200.128
+        - hostname: allehplyoapp02
+            src_mgt: 172.18.208.129
+            src_svc: 172.18.200.129
+        - hostname: allehplyoapp03
+            src_mgt: 172.18.208.130
+            src_svc: 172.18.200.130
+        - hostname: allehplyoapp04
+            src_mgt: 172.18.208.131
+            src_svc: 172.18.200.131
+        - hostname: allehplyoapp05
+            src_mgt: 172.18.208.132
+            src_svc: 172.18.200.132
+        - hostname: allehplyoapp06
+            src_mgt: 172.18.208.133
+            src_svc: 172.18.200.133
+    new_machines:
+        - hostname: alleh1lyoapi01
+            src_mgt: 172.18.208.134
+            src_svc: 172.18.200.134
+            dst_mgt: 172.18.208.134
+            dst_svc: 172.18.200.134
+        - hostname: allehplyoops01
+            src_mgt: 172.18.208.135
+            src_svc: 172.18.200.135
+            dst_mgt: 172.18.208.132
+            dst_svc: 172.18.200.132
+        - hostname: allehplyocron01
+            src_mgt: 172.18.208.137
+            src_svc: 172.18.200.137
+            dst_mgt: 172.18.208.128
+            dst_svc: 172.18.200.128
+        - hostname: alleh1lyows01
+            src_mgt: 172.18.208.138
+            src_svc: 172.18.200.138
+            dst_mgt: 172.18.208.130
+            dst_svc: 172.18.200.130
+        - hostname: allehplyows02
+            src_mgt: 172.18.208.139
+            src_svc: 172.18.200.139
+            dst_mgt: 172.18.208.131
+            dst_svc: 172.18.200.131
+        - hostname: alleh1lyowww01
+            src_mgt: 172.18.208.141
+            src_svc: 172.18.200.141
+            dst_mgt: 172.18.208.133
+            dst_svc: 172.18.200.133

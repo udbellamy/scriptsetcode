@@ -1,0 +1,36 @@
+#dnscmd <ServerName> /recorddelete <ZoneName> <NodeName> <RRType> <RRData>[/f]
+
+- name: Include machine vars
+  include_vars: 'vars.yml'
+
+- name: Delete NEW machines src DNS Entries
+  delegate_to: '{{ dns_server }}'
+  raw: dnscmd {{ bluely_ehp.dns.server }} /RecordDelete {{ bluely_ehp.dns.zone }} {{ item.hostname }} A {{ item.src_mgt }}
+  with_items: {{ bluely_ehp.new_machines }}
+  tags:
+    - delete_new_src_dns
+  when: action == "Migrate"
+
+- name: Create NEW machines dst DNS Entries
+  delegate_to: '{{ dns_server }}'
+  raw: dnscmd {{ bluely_ehp.dns.server }} /RecordAdd {{ bluely_ehp.dns.zone }} {{ item.hostname }} A {{ item.dst_mgt }}
+  with_items: {{ bluely_ehp.new_machines }}
+  tags:
+    - create_new_dst_dns
+  when: action == "Migrate"
+
+- name: Delete NEW machines dst DNS Entries
+  delegate_to: '{{ dns_server }}'
+  raw: dnscmd {{ bluely_ehp.dns.server }} /RecordDelete {{ bluely_ehp.dns.zone }} {{ item.hostname }} A {{ item.dst_mgt }}
+  with_items: {{ bluely_ehp.new_machines }}
+  tags:
+    - delete_new_dst_dns
+  when: action == "Rollback"
+
+- name: Create NEW machines src DNS Entries
+  delegate_to: '{{ dns_server }}'
+  raw: dnscmd {{ bluely_ehp.dns.server }} /RecordAdd {{ bluely_ehp.dns.zone }} {{ item.hostname }} A {{ item.src_mgt }}
+  with_items: {{ bluely_ehp.new_machines }}
+  tags:
+    - create_new_src_dns
+  when: action == "Rollback"

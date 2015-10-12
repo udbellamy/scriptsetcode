@@ -1,0 +1,11 @@
+#!/bin/bash
+
+file=/var/log/centreon-engine/retention.dat
+minimumsize=50000000
+actualsize=$(wc -c <"$file")
+
+if [ $actualsize -ge $minimumsize ]; then
+    echo -e "ATTENTION,\n\nLe fichier de rétention a dépassé les 50Mo sur le Central.\n\n@COS : Merci de contacter l exploitation. En HNO, veuillez contacter l astreinte.\n\n@Exploitation : Vérifiez le bon fonctionnement des pollers.\n\nCordialement,\n\nEQXSUPCTNGUI01." | mail -s "ATTENTION - Vérifier le bon fonctionnement de la supervision !" pouet@pouet.fr,buh@buh.eu
+fi
+
+exit 0
